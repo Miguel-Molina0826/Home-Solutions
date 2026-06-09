@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolsa de Compras - Hogar & Confort</title>
+    <style>
+        body { background-color: #f5f5f5; font-family: -apple-system, sans-serif; margin: 0; padding: 10px; }
+        .carrito-card { max-width: 460px; margin: 2rem auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; }
+        .banner-envio-azul { background-color: #f9f9f9; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin: 15px 0; text-align: center; }
+        .barra-base { background: #e0e0e0; height: 5px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .barra-progreso { background: #7cd1f9; height: 100%; width: 0%; transition: width 0.3s; }
+        .btn-checkout-link { background: #000; color: #fff; width: 100%; border: none; padding: 15px; border-radius: 25px; font-weight: bold; font-size: 1rem; cursor: pointer; margin: 15px 0; display: block; text-align: center; text-decoration: none; box-sizing: border-box; }
+        .garantias { display: flex; justify-content: space-between; font-size: 0.75rem; color: #666; border-top: 1px solid #f0f0f0; padding-top: 15px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="carrito-card">
+        <div class="header-top">
+            <h3 style="margin:0; font-size:1.1rem;">Ítems en tu carrito</h3>
+            <button onclick="window.location.href='index.html'" style="background:#eee; border:none; width:26px; height:26px; border-radius:50%; cursor:pointer; font-weight:bold;">✕</button>
+        </div>
+
+        <div class="banner-envio-azul">
+            <div id="texto-progreso-envio">Cargando condiciones de envío...</div>
+            <div class="barra-base">
+                <div id="barra-progreso-envio" class="barra-progreso"></div>
+            </div>
+        </div>
+
+        <div id="contenedor-items-carrito"></div>
+
+        <button onclick="window.procesarPagoFinal()" class="btn-checkout-link">
+            Finalizar Compra Segura • <span id="monto-total-pagar">$0 COP</span>
+        </button>
+
+        <div class="garantias">
+            <div>🔒<br><strong>Pagos seguros</strong></div>
+            <div>🚚<br><strong>Envíos rápidos</strong></div>
+            <div>💰<br><strong>Contra-entrega</strong></div>
+        </div>
+    </div>
+
+    <script src="productos.js"></script>
+</body>
+</html>

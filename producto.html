@@ -1,0 +1,52 @@
+<div class="caja-dinamica" style="max-width: 900px; margin: 40px auto; display: flex; gap: 40px; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+    <div style="flex: 1; display: flex; justify-content: center; align-items: center; background: #f9f9f9; border-radius: 10px;">
+        <img id="prod-img" src="" style="max-width: 100%; height: auto; padding: 20px;">
+    </div>
+
+    <div style="flex: 1;">
+        <h2 id="prod-nombre" style="font-size: 2rem; margin: 0 0 10px 0;">Cargando...</h2>
+        <p id="prod-precio" style="font-size: 1.5rem; font-weight: bold; color: #27ae60; margin: 0 0 20px 0;"></p>
+        
+        <p id="prod-descripcion" style="color: #666; line-height: 1.6; margin-bottom: 25px;">
+            </p>
+
+        <div style="border-top: 1px solid #eee; padding-top: 20px;">
+            <p style="font-size: 0.9rem; margin-bottom: 15px;">Stock disponible: <strong id="prod-stock"></strong> unidades</p>
+            <button onclick="window.agregarAlCarrito(window.currentProdId, 1, this)" 
+                    style="background:#000; color:#fff; border:none; padding:15px 40px; border-radius:30px; font-weight:bold; cursor:pointer; width: 100%; transition: transform 0.2s;">
+                Agregar al carrito
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="productos.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get('id'));
+        window.currentProdId = id; // Guardamos el ID global para el botón
+        
+        const producto = productosHogar.find(p => p.id === id);
+
+        if (producto) {
+            document.getElementById('prod-img').src = producto.imagen;
+            document.getElementById('prod-nombre').innerText = producto.nombre;
+            document.getElementById('prod-precio').innerText = `$${producto.precio.toLocaleString('es-CO')} COP`;
+            document.getElementById('prod-stock').innerText = producto.stock;
+            
+            // Descripción larga (puedes editar este texto)
+            document.getElementById('prod-descripcion').innerHTML = `
+                <strong>¿Por qué elegir nuestro ${producto.nombre}?</strong><br><br>
+                Diseñado para integrarse perfectamente en tu hogar, este producto combina durabilidad y eficiencia. 
+                Hemos seleccionado materiales de alta calidad para garantizar que tu inversión perdure en el tiempo. 
+                Ideal para quienes buscan optimizar sus tareas diarias con tecnología confiable y un diseño estético que destaca en cualquier espacio. 
+                <br><br>• Materiales resistentes a largo plazo.<br>
+                • Fácil mantenimiento y limpieza.<br>
+                • Garantía extendida de satisfacción.
+            `;
+        } else {
+            document.querySelector('.caja-dinamica').innerHTML = "<h2>Producto no encontrado</h2>";
+        }
+    });
+</script>

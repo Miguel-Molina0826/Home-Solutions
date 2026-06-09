@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home solutions - Catálogo</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <div class="header-carrito-acceso" style="position: fixed; top: 15px; right: 20px; z-index: 1000;">
+        <a href="carrito.html" style="
+            display: flex; align-items: center; justify-content: center;
+            background-color: #000; color: #fff; text-decoration: none;
+            padding: 10px 18px; border-radius: 25px; font-family: sans-serif;
+            font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <span style="margin-right: 8px;">Ir al Carrito</span> 🛒
+            <span id="contador-carrito" style="
+                background-color: #e74c3c; color: #fff; font-size: 0.75rem;
+                font-weight: bold; border-radius: 50%; padding: 2px 7px;
+                margin-left: 8px; display: inline-block;
+            ">0</span>
+        </a>
+    </div>
+
+    <header style="padding: 2rem 1rem; text-align: center;">
+        <h1>Home solutions</h1>
+        <div style="margin-top: 1rem;">
+            <input type="text" id="input-busqueda" placeholder="Buscar productos..." style="padding: 10px; width: 60%; max-width: 400px; border-radius: 20px; border: 1px solid #ccc;">
+        </div>
+    </header>
+
+    <main class="contenedor-ancho">
+        <section id="slider-destacados" style="margin-bottom: 2rem;"></section>
+
+        <h2 id="titulo-seccion" style="margin-bottom: 1.5rem;">Categorías Principales</h2>
+        
+        <div id="contenedor-productos" class="grid-productos"></div>
+    </main>
+
+    <script src="productos.js"></script>
+</body>
+</html>

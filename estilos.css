@@ -1,0 +1,598 @@
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ========================================================================== */
+:root {
+    --color-primario: #2B6CB0;     
+    --color-exito: #48BB78;        
+    --color-texto-oscuro: #2D3748; 
+    --color-texto-mutado: #718096; 
+    --color-fondo-claro: #F7FAFC;  
+    --color-blanco: #FFFFFF;
+    --color-bordes: #E2E8F0;       
+    --fuente-sistema: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-sistema);
+    background-color: var(--color-fondo-claro);
+    color: var(--color-texto-oscuro);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. HEADER
+   ========================================================================== */
+.sitio-header {
+    background-color: var(--color-blanco);
+    border-bottom: 1px solid var(--color-bordes);
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.header-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sitio-header h1 {
+    color: var(--color-primario);
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.subtitulo {
+    color: var(--color-texto-mutado);
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   3. BARRA DE NAVEGACIÓN Y BUSCADOR
+   ========================================================================== */
+.barra-navegacion {
+    background-color: var(--color-blanco);
+    padding: 1rem;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.buscador-contenedor {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#input-busqueda {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--color-bordes);
+    border-radius: 9999px; 
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#input-busqueda:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
+}
+
+/* ==========================================================================
+   4. MAQUETACIÓN ESTRUCTURAL Y CONTENEDORES
+   ========================================================================== */
+.contenedor-principal {
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.titulo-seccion {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-left: 0.75rem;
+    border-left: 4px solid var(--color-primario);
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.grid-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.75rem;
+}
+
+/* ==========================================================================
+   5. DISEÑO DE NUEVO MENÚ DE CATEGORÍAS
+   ========================================================================== */
+.tarjeta-categoria-menu {
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-bordes);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-categoria-menu:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.categoria-menu-imagen {
+    width: 100%;
+    height: 200px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-bordes);
+}
+
+.categoria-menu-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.categoria-menu-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.categoria-menu-info h3 {
+    font-size: 1.3rem;
+    color: var(--color-texto-oscuro);
+    margin-bottom: 0.5rem;
+}
+
+.categoria-menu-info p {
+    font-size: 0.9rem;
+    color: var(--color-texto-mutado);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.btn-ingresar-seccion {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border: none;
+    padding: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.15s ease;
+}
+
+.btn-ingresar-seccion:hover {
+    background-color: #23578F;
+}
+
+.btn-volver-menu {
+    background-color: transparent;
+    border: 1px solid var(--color-primario);
+    color: var(--color-primario);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+}
+
+.btn-volver-menu:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+/* ==========================================================================
+   6. TARJETAS DE PRODUCTOS Y CONTENEDOR DE FOTOS
+   ========================================================================== */
+.tarjeta-producto {
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-bordes);
+    border-radius: 12px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+}
+
+.producto-imagen-contenedor {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.producto-imagen-contenedor img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.tarjeta-producto h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-texto-oscuro);
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-producto p {
+    font-size: 0.9rem;
+    color: var(--color-texto-mutado);
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-producto p:nth-of-type(1) {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-primario);
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.btn-ver-mas {
+    display: block;
+    text-align: center;
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    transition: background-color 0.15s ease;
+}
+
+.btn-ver-mas:hover {
+    background-color: #23578F;
+}
+
+/* ==========================================================================
+   7. INTERFAZ DE DETALLE INDIVIDUAL (producto.html)
+   ========================================================================== */
+.detalle-producto-bloque {
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-bordes);
+    border-radius: 12px;
+    padding: 3rem;
+    max-width: 720px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.detalle-titulo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: var(--color-texto-oscuro);
+}
+
+.info-especifica {
+    border-top: 1px solid var(--color-bordes);
+    border-bottom: 1px solid var(--color-bordes);
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+}
+
+.tag-categoria {
+    display: inline-block;
+    background-color: #EBF8FF;
+    color: #2B6CB0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.precio-destacado {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--color-primario);
+    margin: 0.75rem 0;
+}
+
+.texto-disponibilidad {
+    font-size: 0.95rem;
+    color: var(--color-texto-mutado);
+}
+
+.btn-compra {
+    width: 100%;
+    background-color: var(--color-exito);
+    color: var(--color-blanco);
+    border: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-compra:hover {
+    background-color: #38A169;
+}
+
+.btn-compra:active {
+    transform: scale(0.98);
+}
+
+.enlace-retorno-bloque {
+    margin-top: 0.75rem;
+}
+
+.btn-volver {
+    display: inline-block;
+    color: var(--color-primario);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+}
+
+.btn-volver:hover {
+    background-color: var(--color-fondo-claro);
+}
+
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+.sitio-footer {
+    border-top: 1px solid var(--color-bordes);
+    color: var(--color-texto-mutado);
+    font-size: 0.85rem;
+    margin-top: 5rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   9. BANNER / CAROUSEL ROTATIVO DINÁMICO (Controles Manuales Actualizados)
+   ========================================================================== */
+.slider-principal-contenedor {
+    max-width: 1150px;
+    margin: 1.5rem auto 0 auto;
+    padding: 0 1rem;
+}
+
+.slider-wrapper-relativo {
+    position: relative; /* Base estructural para posicionar flechas y puntos */
+    width: 100%;
+}
+
+.slide-item-contenido {
+    background: linear-gradient(135deg, #eef2f7 0%, #dee5ed 100%);
+    border: 1px solid var(--color-bordes);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.5rem 4rem; /* Margen interno extra para que las flechas no pisen el texto */
+    cursor: pointer;
+    gap: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 250px;
+    flex-wrap: wrap;
+}
+
+.slide-item-contenido:hover {
+    transform: scale(1.005);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.slide-texto {
+    flex: 1;
+    min-width: 280px;
+}
+
+.badge-promo {
+    display: inline-block;
+    background-color: #E53E3E;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+}
+
+.slide-texto h2 {
+    font-size: 1.8rem;
+    color: #1A202C;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.slide-texto p {
+    color: #4A5568;
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.btn-slide-accion {
+    display: inline-block;
+    background-color: var(--color-primario);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.slide-imagen {
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.slide-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* --- BOTONES DE FLECHAS --- */
+.btn-slider-flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--color-bordes);
+    color: var(--color-texto-oscuro);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-slider-flecha:hover {
+    background-color: var(--color-primario);
+    color: #ffffff;
+    border-color: var(--color-primario);
+}
+
+.flecha-izq {
+    left: 15px;
+}
+
+.flecha-der {
+    right: 15px;
+}
+
+/* --- INDICADORES (PUNTITOS DE PAGINACIÓN) --- */
+.slider-indicadores-puntos {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.slider-punto {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.slider-punto:hover {
+    transform: scale(1.2);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.punto-activo {
+    background-color: var(--color-primario);
+    width: 24px; /* Efecto píldora para el activo */
+    border-radius: 5px;
+}
+
+@media (max-width: 680px) {
+    .slide-item-contenido {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 3rem 1.5rem;
+    }
+    .slide-imagen {
+        width: 140px;
+        height: 140px;
+    }
+    .btn-slider-flecha {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .flecha-izq { left: 5px; }
+    .flecha-der { right: 5px; }
+}
+/* ==========================================================================
+   ESTILOS COMPONENTE CONTADOR EN PÍLDORA (+ / -)
+   ========================================================================== */
+.contador-pildora {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 50px;
+    padding: 4px 16px;
+    min-width: 110px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.btn-pildora {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #000000;
+    cursor: pointer;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+.btn-pildora:hover {
+    opacity: 0.5;
+}
+
+.cantidad-pildora {
+    font-size: 1.15rem;
+    font-weight: normal;
+    color: #000000;
+    font-family: system-ui, sans-serif;
+    min-width: 25px;
+    text-align: center;
+}

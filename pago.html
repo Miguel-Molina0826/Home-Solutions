@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogar & Confort - Checkout</title>
+    <style>
+        body { background: #f6f6f6; font-family: -apple-system, system-ui, sans-serif; padding: 15px; margin: 0; }
+        .wrapper-pago { max-width: 520px; margin: 1.5rem auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 10px rgba(0,0,0,0.04); }
+        .titulo-bloque { font-size: 1.25rem; font-weight: 600; margin: 0 0 15px 0; color: #111; }
+        
+        .input-caja { margin-bottom: 14px; }
+        .input-caja label { display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 4px; }
+        .input-caja input, .input-caja select { 
+            width: 100%; 
+            padding: 11px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            font-size: 0.95rem; 
+            box-sizing: border-box; 
+            transition: all 0.2s ease;
+        }
+        .input-caja input:focus { border-color: #000; outline: none; }
+        
+        /* Validaciones visuales en rojo */
+        .input-invalido { border-color: #e74c3c !important; background-color: #fdf2f2; }
+        .error-texto { color: #e74c3c; font-size: 0.75rem; margin-top: 4px; display: none; }
+
+        .grid-doble { display: flex; gap: 12px; }
+        .grid-doble .input-caja { flex: 1; }
+        
+        .tabs-pago { display: flex; gap: 10px; margin: 15px 0; }
+        .tab-item { flex: 1; border: 2px solid #e5e5e5; padding: 12px; border-radius: 6px; text-align: center; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .tab-item.active { border-color: #000; background: #f9f9f9; }
+
+        button:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper-pago">
+        <div id="modulo-formulario-dinamico">
+            <form id="form-checkout" onsubmit="validarYProcesarPedido(event)" novalidate>
+                
+                <h3 class="titulo-bloque">Contacto</h3>
+                <div class="input-caja">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="c-correo" placeholder="tu-correo@ejemplo.com" required>
+                    <div class="error-texto">Introduce un correo electrónico válido</div>
+                </div>
+
+                <h3 class="titulo-bloque" style="margin-top:20px;">Entrega</h3>
+                <div class="grid-doble">
+                    <div class="input-caja"><label>Nombre</label><input type="text" id="c-nombre" required><div class="error-texto">Este campo es obligatorio</div></div>
+                    <div class="input-caja"><label>Apellidos</label><input type="text" id="c-apellido" required><div class="error-texto">Este campo es obligatorio</div></div>
+                </div>
+                
+                <div class="input-caja">
+                    <label>Cédula o NIT</label>
+                    <input type="text" id="c-documento" required>
+                    <div class="error-texto">Este campo es obligatorio</div>
+                </div>
+
+                <div class="input-caja">
+                    <label>Dirección (Calle, Carrera, Conjunto, Bloque, Apto)</label>
+                    <input type="text" id="c-direccion" placeholder="Ej: Carrera 14 # 12-34" required>
+                    <div class="error-texto">Este campo es obligatorio</div>
+                </div>
+
+                <div class="grid-doble">
+                    <div class="input-caja">
+                        <label>Ciudad</label>
+                        <input type="text" id="c-ciudad" placeholder="Ej: Armenia" oninput="actualizarTextoContraentrega()" required>
+                        <div class="error-texto">Este campo es obligatorio</div>
+                    </div>
+                    <div class="input-caja">
+                        <label>Provincia / Estado</label>
+                        <input type="text" id="c-provincia" placeholder="Ej: Quindío" oninput="actualizarTextoContraentrega()" required>
+                        <div class="error-texto">Este campo es obligatorio</div>
+                    </div>
+                </div>
+
+                <div class="input-caja">
+                    <label>Teléfono (10 números)</label>
+                    <input type="text" id="c-telefono" placeholder="3100000000" maxlength="10" required>
+                    <div class="error-texto">El teléfono debe tener exactamente 10 números</div>
+                </div>
+
+                <h3 class="titulo-bloque" style="margin-top:20px;">Método de Pago</h3>
+                <div class="tabs-pago">
+                    <div id="tab-card" class="tab-item active" onclick="cambiarMetodoPago('card')">💳 Tarjeta</div>
+                    <div id="tab-delivery" class="tab-item" onclick="cambiarMetodoPago('delivery')">📦 Contraentrega</div>
+                </div>
+
+                <div id="panel-tarjeta" style="background:#f9f9f9; padding:15px; border-radius:6px; border:1px solid #eee; margin-bottom:15px;">
+                    <div class="input-caja">
+                        <label>Número de la Tarjeta (16 números)</label>
+                        <input type="text" id="t-num" placeholder="4556 1234 5678 9101" maxlength="19">
+                        <div class="error-texto">La tarjeta debe tener exactamente 16 números</div>
+                    </div>
+                    <div class="grid-doble">
+                        <div class="input-caja">
+                            <label>Vence (MM/AA)</label>
+                            <input type="text" id="t-vence" placeholder="12/29" maxlength="5">
+                            <div class="error-texto">Campo obligatorio</div>
+                        </div>
+                        <div class="input-caja">
+                            <label>CVV</label>
+                            <input type="password" id="t-cvv" placeholder="123" maxlength="3">
+                            <div class="error-texto">Campo obligatorio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-contraentrega" style="display:none; background:#e3f2fd; color:#0d47a1; padding:15px; border-radius:6px; font-size:0.85rem; margin-bottom:15px; border:1px solid #bbdefb;">
+                    Cancelas en efectivo o transferencia directamente al mensajero cuando toque tu puerta en <span id="dinamico-ciudad" style="font-weight:bold;">_______</span>, <span id="dinamico-provincia" style="font-weight:bold;">_______</span>.
+                </div>
+
+                <button type="submit" style="background:#000; color:#fff; font-weight:bold; border:none; width:100%; padding:15px; border-radius:25px; font-size:1rem; cursor:pointer; margin-top:10px; transition: background 0.2s;">
+                    Finalizar pedido
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let modoActual = 'card';
+
+        // Quitar errores visuales cuando el usuario empiece a escribir
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                if (input.value.trim() !== "") {
+                    input.classList.remove('input-invalido');
+                    if (input.nextElementSibling && input.nextElementSibling.classList.contains('error-texto')) {
+                        input.nextElementSibling.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // MEJORA: Formateador en tiempo real para separar la tarjeta en bloques de 4
+        document.getElementById('t-num').addEventListener('input', (e) => {
+            let valor = e.target.value.replace(/\D/g, ''); 
+            let bloques = valor.match(/.{1,4}/g);
+            e.target.value = bloques ? bloques.join(' ') : valor;
+        });
+
+        // MEJORA: Restringir que el teléfono reciba letras
+        document.getElementById('c-telefono').addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        function cambiarMetodoPago(tipo) {
+            modoActual = tipo;
+            const tabCard = document.getElementById('tab-card');
+            const tabDelivery = document.getElementById('tab-delivery');
+            const panelCard = document.getElementById('panel-tarjeta');
+            const panelDelivery = document.getElementById('panel-contraentrega');
+
+            document.querySelectorAll('.input-invalido').forEach(el => el.classList.remove('input-invalido'));
+            document.querySelectorAll('.error-texto').forEach(el => el.style.display = 'none');
+
+            if(tipo === 'card') {
+                tabCard.classList.add('active');
+                tabDelivery.classList.remove('active');
+                panelCard.style.display = 'block';
+                panelDelivery.style.display = 'none';
+            } else {
+                tabDelivery.classList.add('active');
+                tabCard.classList.remove('active');
+                panelCard.style.display = 'none';
+                panelDelivery.style.display = 'block';
+                actualizarTextoContraentrega();
+            }
+        }
+
+        function actualizarTextoContraentrega() {
+            const ciudadIngresada = document.getElementById('c-ciudad').value.trim();
+            const provinciaIngresada = document.getElementById('c-provincia').value.trim();
+            document.getElementById('dinamico-ciudad').innerText = ciudadIngresada !== "" ? ciudadIngresada : "_______";
+            document.getElementById('dinamico-provincia').innerText = provinciaIngresada !== "" ? provinciaIngresada : "_______";
+        }
+
+        function validarYProcesarPedido(e) {
+            e.preventDefault();
+            let formularioValido = true;
+
+            const camposObligatorios = ['c-correo', 'c-nombre', 'c-apellido', 'c-documento', 'c-direccion', 'c-ciudad', 'c-provincia', 'c-telefono'];
+            
+            camposObligatorios.forEach(id => {
+                const campo = document.getElementById(id);
+                if (!campo.value.trim()) {
+                    marcarError(campo);
+                    formularioValido = false;
+                }
+            });
+
+            const telefono = document.getElementById('c-telefono');
+            if (telefono.value.length !== 10) {
+                marcarError(telefono, "El teléfono debe tener exactamente 10 números");
+                formularioValido = false;
+            }
+
+            if (modoActual === 'card') {
+                const tarjetaNum = document.getElementById('t-num');
+                const vence = document.getElementById('t-vence');
+                const cvv = document.getElementById('t-cvv');
+
+                const soloNumerosTarj = tarjetaNum.value.replace(/\s/g, ''); // Quita los espacios visuales
+                if (soloNumerosTarj.length !== 16) {
+                    marcarError(tarjetaNum, "La tarjeta debe tener exactamente 16 números");
+                    formularioValido = false;
+                }
+                if (!vence.value.trim()) { marcarError(vence); formularioValido = false; }
+                if (!cvv.value.trim()) { marcarError(cvv); formularioValido = false; }
+            }
+
+            if (!formularioValido) return;
+
+            // Pantalla final exitosa integrada
+            const cliente = document.getElementById('c-nombre').value;
+            const mail = document.getElementById('c-correo').value;
+            const container = document.getElementById('modulo-formulario-dinamico');
+            const ciudadFinal = document.getElementById('c-ciudad').value;
+
+            container.innerHTML = `
+                <div style="text-align:center; padding:2rem 0;">
+                    <div style="font-size:3.5rem; color:#2ecc71; margin-bottom:15px;">✓</div>
+                    <h2 style="margin:0 0 10px 0; font-size:1.4rem;">¡Pedido Finalizado con Éxito!</h2>
+                    <p style="color:#555; font-size:0.9rem; line-height:1.5; margin-bottom:20px;">
+                        Muchas gracias, <strong>${cliente}</strong>. Tu compra ha sido registrada para la ciudad de <strong>${ciudadFinal}</strong>. Hemos enviado el resumen de la compra a <strong>${mail}</strong>.
+                    </p>
+                    <button onclick="window.location.href='index.html'" style="background:#000; color:#fff; border:none; padding:12px 30px; border-radius:20px; font-weight:bold; cursor:pointer;">Volver al Inicio</button>
+                </div>
+            `;
+            localStorage.removeItem('carrito_hogar');
+        }
+
+        function marcarError(elemento, mensajePersonalizado = null) {
+            elemento.classList.add('input-invalido');
+            const mensajeError = elemento.nextElementSibling;
+            if (mensajeError && mensajeError.classList.contains('error-texto')) {
+                if (mensajePersonalizado) {
+                    mensajeError.innerText = mensajePersonalizado;
+                }
+                mensajeError.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
