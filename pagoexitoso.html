@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Compra Exitosa! - Home Solutions</title>
+    <style>
+        :root {
+            --color-primario: #000000;
+            --color-texto: #333333;
+            --color-fondo: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--color-fondo);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--color-texto);
+        }
+        .contenedor-agradecimiento {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        .icono-exito {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #27ae60;
+        }
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #555;
+            margin: 10px 0;
+        }
+        .datos-resaltados {
+            font-weight: 600;
+            color: var(--color-primario);
+        }
+        .btn-volver {
+            display: inline-block;
+            margin-top: 30px;
+            background: var(--color-primario);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-volver:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-agradecimiento">
+        <div class="icono-exito">🎉</div>
+        <h1>¡Listo, gracias por tu compra!</h1>
+        
+        <p>Hola, <span id="cliente-nombre" class="datos-resaltados">Miguel Molina Amador</span>.</p>
+        <p>Tu orden por un valor total de <span id="compra-total" class="datos-resaltados">$0 COP</span> ha sido procesada con éxito.</p>
+        <p>Tu pedido será enviado lo más pronto posible a la dirección dada:</p>
+        <p class="datos-resaltados" id="cliente-direccion" style="background: #f4f4f4; padding: 10px; border-radius: 6px; font-style: italic;">Conjunto Residencial La Ibérica, Armenia, Quindío</p>
+        
+        <a href="index.html" class="btn-volver">Volver al Catálogo</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const parametros = new URLSearchParams(window.location.search);
+            
+            const nombre = parametros.get('nombre') || "Miguel Molina Amador";
+            const direccion = parametros.get('direccion') || "Conjunto Residencial La Ibérica, Armenia, Quindío";
+            const total = parametros.get('total') || "0";
+
+            document.getElementById('cliente-nombre').innerText = nombre;
+            document.getElementById('cliente-direccion').innerText = direccion;
+            
+            if (total !== "0" && total !== "null") {
+                document.getElementById('compra-total').innerText = '$' + parseInt(total).toLocaleString('es-CO') + ' COP';
+            } else {
+                document.getElementById('compra-total').innerText = 'el monto seleccionado';
+            }
+        });
+    </script>
+</body>
+</html>
