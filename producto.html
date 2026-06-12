@@ -1,52 +1,154 @@
-<div class="caja-dinamica" style="max-width: 900px; margin: 40px auto; display: flex; gap: 40px; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-    <div style="flex: 1; display: flex; justify-content: center; align-items: center; background: #f9f9f9; border-radius: 10px;">
-        <img id="prod-img" src="" style="max-width: 100%; height: auto; padding: 20px;">
-    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Solutions - Detalle</title>
+    <link rel="stylesheet" href="estilos.css">
 
-    <div style="flex: 1;">
-        <h2 id="prod-nombre" style="font-size: 2rem; margin: 0 0 10px 0;">Cargando...</h2>
-        <p id="prod-precio" style="font-size: 1.5rem; font-weight: bold; color: #27ae60; margin: 0 0 20px 0;"></p>
-        
-        <p id="prod-descripcion" style="color: #666; line-height: 1.6; margin-bottom: 25px;">
-            </p>
+    <style>
+        body { background: #f5f5f5; }
 
-        <div style="border-top: 1px solid #eee; padding-top: 20px;">
-            <p style="font-size: 0.9rem; margin-bottom: 15px;">Stock disponible: <strong id="prod-stock"></strong> unidades</p>
-            <button onclick="window.agregarAlCarrito(window.currentProdId, 1, this)" 
-                    style="background:#000; color:#fff; border:none; padding:15px 40px; border-radius:30px; font-weight:bold; cursor:pointer; width: 100%; transition: transform 0.2s;">
-                Agregar al carrito
-            </button>
-        </div>
-    </div>
+        .contenedor-detalle {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            gap: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .col-img { flex: 1; text-align: center; }
+        .col-img img { width: 100%; max-width: 400px; }
+
+        .col-info { flex: 1; }
+
+        .precio { font-size: 2rem; font-weight: bold; }
+
+        .descripcion ul { margin-top:10px; padding-left:20px; }
+
+        .contador { margin-top:20px; display:flex; gap:10px; }
+    </style>
+</head>
+<body>
+
+<!-- 🔥 BOTÓN VOLVER -->
+<div style="max-width:1200px;margin:10px auto;">
+    <button onclick="window.location.href='index.html'" style="
+        background:#fff;border:1px solid #ccc;
+        padding:8px 14px;border-radius:8px;cursor:pointer;
+    ">
+        ← Volver
+    </button>
 </div>
 
-<script src="productos.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const params = new URLSearchParams(window.location.search);
-        const id = parseInt(params.get('id'));
-        window.currentProdId = id; // Guardamos el ID global para el botón
-        
-        const producto = productosHogar.find(p => p.id === id);
+<div class="header-carrito-acceso" style="position: fixed; top: 15px; right: 20px;">
+    <a href="carrito.html" style="background:#000;color:#fff;padding:10px 15px;border-radius:20px;">
+        🛒 <span id="contador-carrito">0</span>
+    </a>
+</div>
 
-        if (producto) {
-            document.getElementById('prod-img').src = producto.imagen;
-            document.getElementById('prod-nombre').innerText = producto.nombre;
-            document.getElementById('prod-precio').innerText = `$${producto.precio.toLocaleString('es-CO')} COP`;
-            document.getElementById('prod-stock').innerText = producto.stock;
-            
-            // Descripción larga (puedes editar este texto)
-            document.getElementById('prod-descripcion').innerHTML = `
-                <strong>¿Por qué elegir nuestro ${producto.nombre}?</strong><br><br>
-                Diseñado para integrarse perfectamente en tu hogar, este producto combina durabilidad y eficiencia. 
-                Hemos seleccionado materiales de alta calidad para garantizar que tu inversión perdure en el tiempo. 
-                Ideal para quienes buscan optimizar sus tareas diarias con tecnología confiable y un diseño estético que destaca en cualquier espacio. 
-                <br><br>• Materiales resistentes a largo plazo.<br>
-                • Fácil mantenimiento y limpieza.<br>
-                • Garantía extendida de satisfacción.
-            `;
-        } else {
-            document.querySelector('.caja-dinamica').innerHTML = "<h2>Producto no encontrado</h2>";
-        }
-    });
+<header style="text-align:center;padding:20px;">
+    <h1 onclick="window.location.href='index.html'" style="cursor:pointer;">Home solutions</h1>
+</header>
+
+<main>
+    <div class="contenedor-detalle">
+
+        <div class="col-img">
+            <img id="prod-img">
+        </div>
+
+        <div class="col-info">
+            <h2 id="prod-nombre"></h2>
+            <div class="precio" id="prod-precio"></div>
+
+            <div id="prod-descripcion" class="descripcion"></div>
+
+            <p>Stock: <strong id="prod-stock"></strong></p>
+
+            <div class="contador">
+                <button onclick="operarCantidadDetalle(-1)">-</button>
+                <span id="contador-cantidad-detalle">1</span>
+                <button onclick="operarCantidadDetalle(1)">+</button>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script src="productos.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id')) || 1;
+
+    const producto = productosHogar.find(p => p.id === id);
+    let carrito = JSON.parse(localStorage.getItem('carrito_hogar')) || [];
+
+    const actualizarContador = () => {
+        const total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+        document.getElementById('contador-carrito').innerText = total;
+    };
+
+    actualizarContador();
+
+    if (producto) {
+
+        let item = carrito.find(p => p.id === producto.id);
+        window.cantidadSeleccionada = item ? item.cantidad : 1;
+
+        document.getElementById('prod-img').src = producto.imagen;
+        document.getElementById('prod-nombre').innerText = producto.nombre;
+        document.getElementById('prod-precio').innerText =
+            "$" + producto.precio.toLocaleString("es-CO") + " COP";
+
+        const descripciones = {
+            1: { texto: "Sartén antiadherente de alta calidad ideal para cocinar saludablemente.", puntos:["No se pega","Fácil limpieza","Ahorra aceite"] },
+            2: { texto: "Cuchillos de precisión profesional.", puntos:["Corte preciso","Duraderos","Ergonómicos"] }
+        };
+
+        const info = descripciones[producto.id];
+
+        document.getElementById('prod-descripcion').innerHTML = `
+            <p>${info?.texto || "Producto premium para tu hogar."}</p>
+            <ul>${(info?.puntos || ["Alta calidad","Duradero","Funcional"])
+            .map(p=>`<li>✔ ${p}</li>`).join("")}</ul>
+        `;
+
+        document.getElementById('prod-stock').innerText =
+            producto.stock - window.cantidadSeleccionada;
+
+        document.getElementById('contador-cantidad-detalle').innerText =
+            window.cantidadSeleccionada;
+
+        window.operarCantidadDetalle = (mod) => {
+            let nueva = window.cantidadSeleccionada + mod;
+            if (nueva < 1) nueva = 1;
+            if (nueva > producto.stock) return;
+
+            window.cantidadSeleccionada = nueva;
+
+            let i = carrito.findIndex(p => p.id === producto.id);
+
+            if (i !== -1) carrito[i].cantidad = nueva;
+            else carrito.push({ ...producto, cantidad: nueva });
+
+            localStorage.setItem('carrito_hogar', JSON.stringify(carrito));
+
+            document.getElementById('contador-cantidad-detalle').innerText = nueva;
+            document.getElementById('prod-stock').innerText = producto.stock - nueva;
+
+            actualizarContador();
+        };
+    }
+
+});
 </script>
+
+</body>
+</html>

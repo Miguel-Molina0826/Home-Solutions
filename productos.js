@@ -181,7 +181,8 @@ const pintarProductosDeLista = (listaProductos, tituloPersonalizado = null) => {
 
     listaProductos.forEach(prod => {
         const itemEnCarrito = carrito.find(item => item.id === prod.id);
-        const unidadesDisponiblesVisual = prod.stock - (itemEnCarrito ? itemEnCarrito.cantidad : 0);
+        const cantidadComprada = itemEnCarrito ? itemEnCarrito.cantidad : 0;
+        const unidadesDisponiblesVisual = prod.stock - cantidadComprada;
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-producto';
@@ -190,10 +191,14 @@ const pintarProductosDeLista = (listaProductos, tituloPersonalizado = null) => {
             <div style="height:130px; display:flex; justify-content:center; align-items:center; margin-bottom:10px;"><img src="${prod.imagen}" style="max-height:100%; max-width:100%; object-fit:contain;"></div>
             <h3 style="font-size:1rem; margin:0 0 5px 0; font-weight:600; min-height:40px;">${prod.nombre}</h3>
             <p style="font-weight:bold; color:#111; margin:0 0 5px 0;">$${prod.precio.toLocaleString('es-CO')} COP</p>
-            <p style="font-size:0.75rem; color:#888; margin:0 0 12px 0;">Stock: <span id="stock-display-${prod.id}">${unidadesDisponiblesVisual}</span> uds</p>
+            <p style="font-size:0.75rem; color:#888; margin:0 0 12px 0;">Stock: <span id="stock-index-${prod.id}">${unidadesDisponiblesVisual}</span> uds</p>
             <div style="display:flex; gap:8px;">
                 <a href="producto.html?id=${prod.id}" style="flex:1; background:#f4f4f4; color:#333; text-align:center; padding:7px 0; border-radius:4px; text-decoration:none; font-size:0.85rem; font-weight:500;">Detalles</a>
-                <button onclick="window.agregarAlCarrito(${prod.id}, 1, this)" style="background:#27ae60; color:#fff; border:none; padding:7px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">+ 🛒</button>
+                <div class="selector-cantidad-pildora" style="flex:1; background:#fff; border:1px solid #ddd; border-radius:20px; display:flex; align-items:center; justify-content:center; gap:6px; padding:0 8px;">
+                    <button onclick="window.operarCarritoDesdeCatalogo(${prod.id}, -1)" style="background:none; border:none; color:#333; font-weight:bold; cursor:pointer; padding:4px 6px; font-size:0.9rem;">−</button>
+                    <span id="cantidad-index-${prod.id}" style="font-weight:bold; min-width:20px; text-align:center;">${cantidadComprada}</span>
+                    <button onclick="window.operarCarritoDesdeCatalogo(${prod.id}, 1)" style="background:none; border:none; color:#333; font-weight:bold; cursor:pointer; padding:4px 6px; font-size:0.9rem;">+</button>
+                </div>
             </div>
         `;
         contenedorProductos.appendChild(tarjeta);
@@ -477,3 +482,30 @@ window.confirmarAccionCarrito = () => {
 document.addEventListener("DOMContentLoaded", () => {
     renderizarDetalleProducto();
 });
+// 🔥 CONTROL DE CANTIDAD FUNCIONAL
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.control-cantidad').forEach(control => {
+
+        let cantidad = 1;
+
+        const span = control.querySelector('.cantidad');
+        const btnMas = control.querySelector('.btn-sumar');
+        const btnMenos = control.querySelector('.btn-restar');
+
+        btnMas.addEventListener('click', () => {
+            cantidad++;
+            span.textContent = cantidad;
+        });
+
+        btnMenos.addEventListener('click', () => {
+            if (cantidad > 1) {
+                cantidad--;
+                span.textContent = cantidad;
+            }
+        });
+
+    });
+});
+
+
+window.location.href = "pagoexitoso.html?nombre=" + encodeURIComponent(nombreCliente) + "&direccion=" + encodeURIComponent(direccionEnvio) + "&total=" + totalCompra;

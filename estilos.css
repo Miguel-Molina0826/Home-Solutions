@@ -596,3 +596,90 @@ body {
     min-width: 25px;
     text-align: center;
 }
+.control-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.control-cantidad button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-color: #2B6CB0;
+    color: white;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cantidad {
+    font-weight: bold;
+}
+
+/* --- ESTILOS PARA EL CARRUSEL MODERNO --- */
+.slider-wrapper-relativo {
+    position: relative;
+    display: flex;
+    background: #f4f4f4;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 20px;
+    align-items: center;
+    min-height: 220px;
+    box-sizing: border-box;
+}
+
+.slide-item-contenido {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.slide-texto {
+    flex: 1;
+    padding-right: 15px;
+    text-align: left;
+}
+
+.slide-imagen {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.slider-indicadores-puntos {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+/* Estilo base para los círculos */
+.slider-punto {
+    width: 8px;
+    height: 8px;
+    background: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* Cómo se ve el círculo cuando está activo */
+.slider-punto.punto-activo {
+    background: #000 !important;
+}

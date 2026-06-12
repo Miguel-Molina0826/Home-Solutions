@@ -55,11 +55,21 @@
                     <div class="input-caja"><label>Apellidos</label><input type="text" id="c-apellido" required><div class="error-texto">Este campo es obligatorio</div></div>
                 </div>
                 
-                <div class="input-caja">
-                    <label>Cédula o NIT</label>
-                    <input type="text" id="c-documento" required>
-                    <div class="error-texto">Este campo es obligatorio</div>
-                </div>
+              <div class="input-caja">
+    <label for="documento">Cédula o NIT:</label>
+    <input 
+        type="text" 
+        id="documento" 
+        name="documento"
+        inputmode="numeric" 
+        pattern="[0-9]{7,10}"
+        maxlength="10" 
+        placeholder="Ej: 1094900123" 
+        required
+        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+    >
+    <span class="error-texto" style="color: #e74c3c; font-size: 0.8rem; display: none;">El documento debe ser puramente numérico y tener máximo 10 dígitos.</span>
+</div>
 
                 <div class="input-caja">
                     <label>Dirección (Calle, Carrera, Conjunto, Bloque, Apto)</label>
@@ -249,3 +259,41 @@
     </script>
 </body>
 </html>
+
+<!-- REEMPLAZA EL BLOQUE DEL FINAL DE PAGO.HTML CON ESTE CÓDIGO DINÁMICO -->
+<script>
+window.validarYProcesarPedido = function(event) {
+    if (event) {
+        if (typeof event.preventDefault === 'function') event.preventDefault();
+        if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+    }
+
+    // 1. Buscamos de forma flexible los inputs recorriendo el formulario
+    // Esto evita el error de 'null' si cambiaste algún ID en el HTML
+    const inputNombre = document.querySelector('input[type="text"]') || document.getElementById('nombre') || document.getElementById('nombreCliente');
+    const inputDireccion = document.querySelector('input[id*="direc"]') || document.querySelector('input[name*="direc"]') || document.getElementById('direccion');
+
+    // 2. Capturamos lo que el usuario digitó en la pantalla en ese instante
+    const nombreFinal = (inputNombre && inputNombre.value.trim() !== "") ? inputNombre.value.trim() : "Cliente";
+    const direccionFinal = (inputDireccion && inputDireccion.value.trim() !== "") ? inputDireccion.value.trim() : "Dirección de envío";
+    
+    // 3. Calculamos el monto acumulado real leyendo el LocalStorage de tu carrito original
+    let totalCompra = 0;
+    try {
+        // Buscamos bajo la clave estándar que usan tus funciones para guardar el carrito
+        const carritoGuardado = localStorage.getItem('carritoDetalle') || localStorage.getItem('carrito');
+        if (carritoGuardado) {
+            const datos = JSON.parse(carritoGuardado);
+            if (Array.isArray(datos)) {
+                totalCompra = datos.reduce((ac, item) => ac + (parseFloat(item.precio) * parseInt(item.cantidad || 1)), 0);
+            }
+        }
+    } catch(e) {
+        console.error("Error al recuperar el monto del carrito:", e);
+    }
+
+    // 4. Redireccionamos a tu archivo real pasando los datos ingresados y el monto
+    window.location.href = "pagoexitoso.html?nombre=" + encodeURIComponent(nombreFinal) + "&direccion=" + encodeURIComponent(direccionFinal) + "&total=" + totalCompra;
+    return false;
+};
+</script>
